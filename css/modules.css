@@ -1,5 +1,6 @@
 main section {
-  width: 50%;
+  width: 480px;
+  /* width: 50%; */
   padding: 30px;
   margin-bottom: 30px;
 }

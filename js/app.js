@@ -7,7 +7,8 @@ $.ajax("./data/page-1.json").then((data) => {
       item.image_url,
       item.description,
       item.keyword,
-      item.horns
+      item.horns,
+      item.title
     );
     allUnicorns.push(newObject);
     newObject.render();
@@ -19,26 +20,22 @@ $.ajax("./data/page-1.json").then((data) => {
 
 var allUnicorns = [];
 
-function Unicorn(image_url, description, keyword, horns) {
+function Unicorn(image_url, description, keyword, horns, title) {
   this.image_url = image_url;
+  this.title = title;
   this.description = description;
   this.keyword = keyword;
   this.horns = horns;
 }
 Unicorn.prototype.render = function () {
-  let clonedSection = $(".rendering").clone();
-  let h2 = clonedSection.find("h2").text(this.title);
-  let img = clonedSection
-    .find("img")
-    .attr("src", this.image_url)
-    .attr("alt", this.title);
-  let p = clonedSection.find("p").text(this.description);
-  clonedSection.attr("class", "rendered");
-  clonedSection.attr("data-keyword", this.keyword);
-
-  // clonedSection.data('keyword',item.keyword);
-
-  $("main").append(clonedSection);
+  // let template = $('#neighborhood-template').html(); // return a string
+  // let html = Mustache.render(template,this); //(string,object)
+  // $('#neighborhoods').append(html);
+  console.log(this);
+  let template = $("#unicorns-template").html();
+  console.log(template);
+  let html = Mustache.render(template, this); //(string,object)
+  $("main").append(html);
 };
 
 function filter(mohamad) {
