@@ -2,7 +2,9 @@
 let selectKeywords = $(".keywords");
 let selectSort = $("#sort");
 let cloneUnicorns = [];
-$.ajax("./data/page-1.json").then((data) => {
+function callAjax(path) {$.ajax(path).then((data) => {
+  $('main').html('')
+  allUnicorns = []
   data.forEach((item) => {
     let newObject = new Unicorn(
       item.image_url,
@@ -13,12 +15,17 @@ $.ajax("./data/page-1.json").then((data) => {
       item.horns
     );
     allUnicorns.push(newObject);
+
     newObject.render();
   });
 
   filter(allUnicorns);
   $("main section").first().remove();
+  cloneUnicorns = [...allUnicorns]
 });
+}
+callAjax('./data/page-1.json')
+
 
 var allUnicorns = [];
 
@@ -63,7 +70,6 @@ $(selectKeywords).change(() => {
 selectSort.change((event) => {
   let target = $(event.target).val();
   console.log(target);
-
   if (target === "title") {
     allUnicorns.sort((a, b) => {
       if (a.title.toUpperCase() > b.title.toUpperCase()) return 1;
@@ -81,14 +87,23 @@ selectSort.change((event) => {
         return 0;
       }
     });
+  } else {
+    $("main").html("");
+    cloneUnicorns.forEach((unicorn) => {
+      unicorn.render();
+    });
+    return;
   }
+  console.log(" not returned");
   $("main").html("");
   allUnicorns.forEach((unicorn) => {
     unicorn.render();
   });
 });
-// people.sort((a, b) => {
-//   if (a.role.toUpperCase() < b.role.toUpperCase()) return 1;
-//   else if (a.role.toUpperCase() > b.role.toUpperCase()) return -1;
-//   else return 0;
-// });
+$('button').click(()=>{
+  $('.keywords option:not(:first-of-type)').remove()
+  console.log( $('.keywords'));
+  callAjax(event.target.dataset.page)
+
+console.log(event.target.dataset.page);
+})

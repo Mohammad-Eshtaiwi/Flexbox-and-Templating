@@ -21,20 +21,26 @@
   <body class="container">
     <header>
       <h1>The Gallery of Horns</h1>
-      <div>
+      <article class= 'flex-row'>
+      <div id="showing">
         <h3>show by keyword</h3>
         <select class="keywords">
           <option value="default">All</option>
         </select>
       </div>
 
-      <div>
+      <div id="sorting">
         <h3>sort by</h3>
         <select id="sort">
           <option value="default">default</option>
           <option value="number">number of horns</option>
           <option value="title">title</option>
         </select>
+      </div>
+      </article>
+      <div  class= 'flex-row flex-center'>
+        <button data-page = './data/page-1.json'>page 1</button>
+        <button data-page = './data/page-2.json'>page 2</button>
       </div>
     </header>
     <main>
