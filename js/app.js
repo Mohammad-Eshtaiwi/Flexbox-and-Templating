@@ -1,6 +1,7 @@
 "use strict";
-let select = $("select");
-
+let selectKeywords = $(".keywords");
+let selectSort = $("#sort");
+let cloneUnicorns = [];
 $.ajax("./data/page-1.json").then((data) => {
   data.forEach((item) => {
     let newObject = new Unicorn(
@@ -8,7 +9,8 @@ $.ajax("./data/page-1.json").then((data) => {
       item.description,
       item.keyword,
       item.horns,
-      item.title
+      item.title,
+      item.horns
     );
     allUnicorns.push(newObject);
     newObject.render();
@@ -28,12 +30,9 @@ function Unicorn(image_url, description, keyword, horns, title) {
   this.horns = horns;
 }
 Unicorn.prototype.render = function () {
-  // let template = $('#neighborhood-template').html(); // return a string
-  // let html = Mustache.render(template,this); //(string,object)
-  // $('#neighborhoods').append(html);
-  console.log(this);
+  console.log(this.horns);
+
   let template = $("#unicorns-template").html();
-  console.log(template);
   let html = Mustache.render(template, this); //(string,object)
   $("main").append(html);
 };
@@ -45,11 +44,11 @@ function filter(mohamad) {
   });
   setUnique.forEach((item) => {
     let option = $(`<option value = ${item}>${item}</option>`);
-    select.append(option);
+    selectKeywords.append(option);
   });
 }
 
-$(select).change(() => {
+$(selectKeywords).change(() => {
   $("section").removeClass("d-none");
   let val = $("select option:selected").attr("value");
   if (val !== "default") {
@@ -60,3 +59,36 @@ $(select).change(() => {
     targetedElements.addClass("d-none");
   }
 });
+
+selectSort.change((event) => {
+  let target = $(event.target).val();
+  console.log(target);
+
+  if (target === "title") {
+    allUnicorns.sort((a, b) => {
+      if (a.title.toUpperCase() > b.title.toUpperCase()) return 1;
+      else if (a.title.toUpperCase() < b.title.toUpperCase()) return -1;
+      else return 0;
+    });
+  } else if (target === "number") {
+    console.log("by number");
+    allUnicorns.sort((a, b) => {
+      if (a.horns > b.horns) {
+        return 1;
+      } else if (a.horns < b.horns) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+  $("main").html("");
+  allUnicorns.forEach((unicorn) => {
+    unicorn.render();
+  });
+});
+// people.sort((a, b) => {
+//   if (a.role.toUpperCase() < b.role.toUpperCase()) return 1;
+//   else if (a.role.toUpperCase() > b.role.toUpperCase()) return -1;
+//   else return 0;
+// });
